@@ -1,10 +1,10 @@
 import openai
 
-from config import load_config
+from config import Config
 
-config = load_config()
+config = Config()
 
-openai.api_key = config.main.gpt_token
+openai.api_key = config.gpt.gpt_token
 
 title = "Футболка крутяцкая!"
 keys = """футболка мужская
@@ -208,17 +208,25 @@ muji
 парные вещи с парнем
 одежда для мужское"""
 
+msg = f"Название товара: {title}\n" \
+      f"Поисковые запросы, по которым продают конкуренты в порядке значимости:\n" \
+      f"{keys}\n\n" \
+      f"Составь описание карточки товара для магазина wildberries, используя названия и поисковые запросы конкурентов. " \
+      f"Используй очень короткие предложения, по максимиуму использовав поисковые запросы. " \
+      f"Игнорируй поисковые запросы с ошибками. Длина описания до 2000 символов. " \
+      f"В ответе не пиши ничего лишнего, пиши только описание товара."
 
-while True:
-    message = input("User : ")
-    if message:
-        messages.append(
-            {"role": "user", "content": message},
-        )
-        chat = openai.ChatCompletion.create(
-            model=config.main.model_name, messages=messages
-        )
+messages = [
+    {"role": "user", "content": msg},
+]
+chat = openai.ChatCompletion.create(
+    model=config.gpt.model_name, messages=messages
+)
 
-    reply = chat.choices[0].message.content
-    print(f"ChatGPT: {reply}")
-    messages.append({"role": "assistant", "content": reply})
+reply = chat.choices[0].message.content
+print(f"ChatGPT: {reply}")
+
+
+
+
+

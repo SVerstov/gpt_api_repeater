@@ -14,7 +14,7 @@ def setup_logging():
         log_path.mkdir(exist_ok=True)
         with logger_conf_path.open("r", encoding='utf-8') as f:
             logging_config = yaml.safe_load(f)
-        logging.config.dictConfig(logging_config)
+            logging.config.dictConfig(logging_config)
         logger.info("Logging configured successfully")
     except IOError:
         logging.basicConfig(level=logging.DEBUG)

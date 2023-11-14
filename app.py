@@ -1,17 +1,15 @@
 import logging
 
-from config import load_config, setup_logging
+from config.logger_loader import setup_logging
+
+from api.main import run_fastapi
 
 logger = logging.getLogger(__name__)
 
 
-
 def main():
     setup_logging()
-    config = load_config()
-    print(
-        config.main.gpt_token
-    )
+    run_fastapi()
 
 
 if __name__ == '__main__':
