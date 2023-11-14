@@ -12,5 +12,4 @@ update:
 	git pull origin master
 	poetry install
 	make migrate
-	sudo systemctl restart wild_bot.service
-	sudo systemctl restart wild_bot_api.service
+	sudo systemctl restart gpt_repeater.service
