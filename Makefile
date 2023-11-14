@@ -1,4 +1,4 @@
-.PHONY: init migrate migrations downgrade run parse update
+.PHONY: init run update
 
 init:
 	poetry install
