@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 class GptSeoRequest(BaseModel):
     title: str
     keys: list[str]
-    login_data: dict
 
 
 @app.post('/api/gpt_repeater')
