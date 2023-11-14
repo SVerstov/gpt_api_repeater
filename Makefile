@@ -9,6 +9,6 @@ run:
 
 
 update:
-	git pull origin master
+	git pull
 	poetry install
 	sudo systemctl restart gpt_repeater.service
