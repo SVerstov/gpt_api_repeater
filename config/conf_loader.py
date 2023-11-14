@@ -29,7 +29,7 @@ class GPTConfig(ConfigBranch):
     gpt_token: str
     model_name: str
     gpt_message: str
-    allowed_ip: str
+    allowed_ips: list[str]
 
     def after_load(self):
         pass
