@@ -11,5 +11,4 @@ run:
 update:
 	git pull origin master
 	poetry install
-	make migrate
 	sudo systemctl restart gpt_repeater.service
