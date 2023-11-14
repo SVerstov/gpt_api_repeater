@@ -1,0 +1,45 @@
+bot:
+  token: ""
+  log_chat: 403196518
+  superusers:
+    - 403196518
+  botapi:
+    # can be official (api.telegram.org)
+    type: official
+#    # or local (setup in docker-compose.yml)
+#    type: local
+#    botapi_url: "http://telegram-bot-api:8081"
+#    file_url: "http://nginx:80"
+db:
+  type: postgresql
+  connector: asyncpg
+  host: localhost
+  port: 5432
+  login:
+  password:
+  name: wb_bot
+  show_echo: no # if enable shows all SQL queries and results
+  # performance settings:
+  pool_size: 25
+  max_overflow: 20
+  chunk_size: 1100
+s_positions:
+  csv_file_path: tmp/queries.csv
+  csv_url: "https://trending-searches.wb.ru/file?period=month"
+  search_url: "https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest={delivery_point_id}&query={query}&regions=80,64,38,4,115,83,33,68,70,69,30,86,75,40,1,66,48,110,31,22,71,114&resultset=catalog&sort=popular&spp=22&suppressSpellcheck=true"
+  search_depth: 1 # add parameter to url page=
+  delivery_point_id: -1257786
+  async_tasks_limit: 20
+  threads: 1 # not active yet
+  use_fake_agent: no
+  sleep_sometimes: no
+  max_parse_attempts: 3
+cache:
+  #  redis settings
+  use_cache: yes
+  host: localhost
+  port: 6379
+  #  password: your_password
+  db_num: 0
+  cache_prefix: "wb" # префикс для ключей в кэше
+  ttl: 3600 # время жизни кэша в секундах

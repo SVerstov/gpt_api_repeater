@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "seo-gpt-api"
+version = "0.1.0"
+description = ""
+authors = ["Seliverstov <seli@verstov.pro>"]
+readme = "README.md"
+packages = [{include = "seo_gpt_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyyaml = "^6.0.1"
+colorlog = "^6.7.0"
+fastapi = "^0.104.1"
+openai = "^0.28.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
