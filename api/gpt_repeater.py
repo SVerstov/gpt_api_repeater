@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 import lorem as lorem
@@ -20,6 +21,7 @@ class GptSeoRequest(BaseModel):
 @app.post('/api/gpt_repeater')
 async def gpt_repeater(request: Request, data: GptSeoRequest):
     if data.title == '/test':
+        await asyncio.sleep(5)
         return {'result': lorem.text()}
     config: Config = request.state.config
     openai_client = AsyncOpenAI(api_key=config.gpt.gpt_token)
