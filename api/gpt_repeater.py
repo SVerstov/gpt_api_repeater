@@ -1,6 +1,7 @@
 import logging
 
-import openai
+import lorem as lorem
+from openai import AsyncOpenAI
 from fastapi import HTTPException
 from pydantic import BaseModel
 from starlette.requests import Request
@@ -18,7 +19,10 @@ class GptSeoRequest(BaseModel):
 
 @app.post('/api/gpt_repeater')
 async def gpt_repeater(request: Request, data: GptSeoRequest):
+    if data.title == '/test':
+        return {'result': lorem.text()}
     config: Config = request.state.config
+    openai_client = AsyncOpenAI(api_key=config.gpt.gpt_token)
     if request.client.host not in config.gpt.allowed_ips:
         raise HTTPException(status_code=403, detail="Access denied")
 
@@ -28,8 +32,7 @@ async def gpt_repeater(request: Request, data: GptSeoRequest):
     messages = [
         {"role": "user", "content": bot_msg},
     ]
-    openai.api_key = config.gpt.gpt_token
-    chat = openai.ChatCompletion.create(
+    chat = await openai_client.chat.completions.create(
         model=config.gpt.model_name, messages=messages
     )
     reply = chat.choices[0].message.content
