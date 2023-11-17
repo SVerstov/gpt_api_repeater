@@ -1,0 +1,39 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s [%(levelname)s] - %(name)s.%(funcName)s - %(message)s'
+  colored:
+    (): colorlog.ColoredFormatter
+    format: '%(asctime)s %(log_color)s[%(levelname)s] - %(name)s.%(funcName)s - %(blue)s%(message)s'
+    datefmt: '%H:%M:%S'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: colored
+    stream: ext://sys.stdout
+  gpt_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: 'log/gpt.log'
+    maxBytes: 10485760
+    backupCount: 5
+    encoding: utf-8
+  other_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: simple
+    filename: 'log/other.log'
+    maxBytes: 10485760
+    backupCount: 5
+    encoding: utf-8
+loggers:
+  gpt:
+    level: DEBUG
+    handlers: [ console, gpt_file_handler ]
+    propagate: False
+root:
+  level: INFO
+  handlers: [ console, other_file_handler ]
+disable_existing_loggers: no
