@@ -23,6 +23,7 @@ class GptSeoRequest(BaseModel):
 async def gpt_repeater(request: Request, data: GptSeoRequest):
     config: Config = request.state.config
     if request.client.host not in config.gpt.allowed_ips:
+        logger.warning(f'Попытка доступа с несанкционированного ip {request.client.host}')
         raise HTTPException(status_code=403, detail="Access denied")
     if data.title == '/test':
         await asyncio.sleep(5)
@@ -39,4 +40,5 @@ async def gpt_repeater(request: Request, data: GptSeoRequest):
         model=config.gpt.model_name, messages=messages
     )
     reply = chat.choices[0].message.content
+    logger.debug(f'Успешная генерация Сео-описания для товара {data.title}')
     return {'result': reply}
