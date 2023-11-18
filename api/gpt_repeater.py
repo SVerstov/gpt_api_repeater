@@ -22,23 +22,32 @@ class GptSeoRequest(BaseModel):
 @app.post('/api/gpt_repeater')
 async def gpt_repeater(request: Request, data: GptSeoRequest):
     config: Config = request.state.config
-    if request.client.host not in config.gpt.allowed_ips:
-        logger.warning(f'Попытка доступа с несанкционированного ip {request.client.host}')
-        raise HTTPException(status_code=403, detail="Access denied")
+    await check_allow_ip(config, request)
     if data.title == '/test':
         await asyncio.sleep(5)
         return {'result': lorem.text()}
 
     openai_client = AsyncOpenAI(api_key=config.gpt.gpt_token)
-    keys = list(filter(lambda x: len(x) > 2, data.keys))
-    keys = "\n".join(keys)
-    bot_msg = config.gpt.gpt_message.format(title=data.title, description=data.description,keys=keys)
-    messages = [
-        {"role": "user", "content": bot_msg},
-    ]
+    messages = await gen_gpt_messages(config, data)
     chat = await openai_client.chat.completions.create(
         model=config.gpt.model_name, messages=messages
     )
     reply = chat.choices[0].message.content
     logger.debug(f'Успешная генерация Сео-описания для товара {data.title}')
     return {'result': reply}
+
+
+async def gen_gpt_messages(config, data):
+    keys = list(filter(lambda x: len(x) > 2, data.keys))
+    keys = "\n".join(keys)
+    bot_msg = config.gpt.gpt_message.format(title=data.title, description=data.description, keys=keys)
+    messages = [
+        {"role": "user", "content": bot_msg},
+    ]
+    return messages
+
+
+async def check_allow_ip(config, request):
+    if request.client.host not in config.gpt.allowed_ips:
+        logger.warning(f'Попытка доступа с несанкционированного ip {request.client.host}')
+        raise HTTPException(status_code=403, detail="Access denied")
