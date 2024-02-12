@@ -27,7 +27,7 @@ class ConfigBranch:
 
 class BotConfig(ConfigBranch):
     token: str
-
+    log_chat: int
 
 class GPTConfig(ConfigBranch):
     gpt_token: str
