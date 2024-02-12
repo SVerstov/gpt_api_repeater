@@ -25,6 +25,10 @@ class ConfigBranch:
         pass
 
 
+class BotConfig(ConfigBranch):
+    token: str
+
+
 class GPTConfig(ConfigBranch):
     gpt_token: str
     model_name: str
@@ -39,11 +43,12 @@ class GPTConfig(ConfigBranch):
 @dataclass
 class Config:
     gpt: GPTConfig
+    bot: BotConfig
 
     def after_load(self):
         pass
 
-    def __init__(self) -> Self:
+    def __init__(self):
         with open("config/config.yaml", 'r', encoding='utf-8') as f:
             config_dct = yaml.safe_load(f)
 
